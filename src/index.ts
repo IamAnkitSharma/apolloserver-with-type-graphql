@@ -9,7 +9,7 @@ async function startServer () {
     const apolloServer = new ApolloServer({
         context: ({ req }) => ({ req }),
         schema: await buildSchema({
-            resolvers: [AuthResolver],
+            resolvers: [AuthResolver]
         })
     });
     await apolloServer.start();

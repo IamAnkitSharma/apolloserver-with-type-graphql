@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    name: String,
+    username: String,
+    password: String,
 }, {
     toJSON: {
         transform: (_doc, ret) => {
@@ -14,7 +15,8 @@ const userSchema = new mongoose.Schema({
 
 export interface IUser extends mongoose.Schema { 
     id: string;
-    name: string;
+    username: string;
+    password: string;
 }
 
 export const User = mongoose.model<IUser>("User", userSchema);

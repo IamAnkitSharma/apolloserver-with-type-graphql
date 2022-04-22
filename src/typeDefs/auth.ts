@@ -7,5 +7,11 @@ export class UserObjectType {
     id!: string;
 
     @Field()
-    name!: string;
+    username!: string;
+}
+
+@ObjectType()
+export class LoginResponse {
+    @Field()
+    accessToken!: string;
 }
