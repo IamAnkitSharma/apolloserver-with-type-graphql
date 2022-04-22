@@ -6,8 +6,13 @@ import { AuthResolver } from "./resolvers/auth";
 import dotenv from 'dotenv';
 dotenv.config();
 
+const app = express();
+
+app.get('/graphql', (req, res) => { 
+    res.send('Hello World');
+});
+
 async function startServer () {
-    const app = express();
     const apolloServer = new ApolloServer({
         context: ({ req }) => ({ req }),
         schema: await buildSchema({
