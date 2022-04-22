@@ -6,6 +6,8 @@ import { UserService } from '../services/user.service';
 import jwt from 'jsonwebtoken';
 import { isAuthenticated } from '../middlewares/auth.middleware';
 import { MyContext } from '../types';
+import { LoginInput } from './dto/login.dto';
+import { SignupInput } from './dto/signup.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -21,10 +23,9 @@ export class AuthResolver {
 
     @Query(() => LoginResponse)
     async login(
-        @Arg('username', () => String) username: string,
-        @Arg('password', () => String) password: string
+        @Arg('data', () => LoginInput) login: LoginInput,
     ): Promise<LoginResponse> {
-        const user = await UserService.verifyUserNameAndPassword(username, password);
+        const user = await UserService.verifyUserNameAndPassword(login.username, login.password);
         return {
             accessToken: jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' })
         }
@@ -32,10 +33,9 @@ export class AuthResolver {
 
     @Mutation(() => UserObjectType)
     async signup(
-        @Arg('username', () => String) username: string,
-        @Arg('password', () => String) password: string
+        @Arg('data', () => SignupInput) data: SignupInput,
     ): Promise<IUser> {
-        const user = await UserService.createUser(username, password);
+        const user = await UserService.createUser(data.username, data.password);
         return user;
     }
 }

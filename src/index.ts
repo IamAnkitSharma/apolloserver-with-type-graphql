@@ -14,8 +14,10 @@ async function startServer () {
             resolvers: [AuthResolver]
         }),
         formatError(error) {
-            return new Error(error.message);
+            console.log(JSON.stringify(error, null, 2));
+            return error;
         },
+        debug: process.env.NODE_ENV !== 'production'
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });

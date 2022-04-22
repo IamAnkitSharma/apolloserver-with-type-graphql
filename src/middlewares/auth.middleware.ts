@@ -22,6 +22,7 @@ export const isAuthenticated: MiddlewareFn<MyContext> = ({ context }, next) => {
         }
     }
     catch (err) {
+        console.log(err)
         throw new Error('Invalid Token');
     }
     return next();
