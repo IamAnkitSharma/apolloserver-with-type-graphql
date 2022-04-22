@@ -3,7 +3,7 @@ import express from 'express';
 import mongoose from "mongoose";
 import 'reflect-metadata';
 import { buildSchema } from "type-graphql";
-import { AuthResolver } from "./resolvers/auth";
+import { AuthResolver } from "./resolvers/auth.resolver";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -30,6 +30,6 @@ async function startServer() {
     apolloServer.applyMiddleware({ app });
     mongoose.connect(process.env.MONGO_URL as string);
     console.log('MongoDB Connected!!')
-    app.listen({ port: 4000 }, () => console.log(`🚀  Server ready at http://localhost:4000${apolloServer.graphqlPath}`));
+    app.listen({ port: 4000 }, () => console.log(`🚀 Server ready at http://localhost:4000${apolloServer.graphqlPath}`));
 }
-startServer()
+startServer();

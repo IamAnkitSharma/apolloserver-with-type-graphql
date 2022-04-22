@@ -1,9 +1,9 @@
-import { IUser, User } from './../models/user.model';
+import { IUser } from '../models/user.model';
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
-import { LoginResponse, UserObjectType } from '../typeDefs/auth';
+import { LoginResponse, UserObjectType } from '../typeDefs/auth.typedef';
 import { UserService } from '../services/user.service';
 import jwt from 'jsonwebtoken';
-import { isAuthenticated } from '../middlewares/auth.middleware';
+import { isAuthenticated, setUserId } from '../middlewares/auth.middleware';
 import { MyContext } from '../types';
 import { LoginInput } from './dto/login.dto';
 import { SignupInput } from './dto/signup.dto';
@@ -11,7 +11,7 @@ import { SignupInput } from './dto/signup.dto';
 @Resolver()
 export class AuthResolver {
     @Query(() => UserObjectType)
-    @UseMiddleware(isAuthenticated)
+    @UseMiddleware(setUserId)
     async profile(
         @Ctx() ctx: MyContext
     ): Promise<IUser> {

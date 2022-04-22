@@ -27,3 +27,24 @@ export const isAuthenticated: MiddlewareFn<MyContext> = ({ context }, next) => {
     }
     return next();
 }
+
+
+export const setUserId: MiddlewareFn<MyContext> = ({ context }, next) => {
+    try {
+        const authorization = (context.req.headers as unknown as Headers).authorization;
+        const token = authorization.split(' ')[1];
+        const payload = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayLoad;
+        context.user = {
+            ...context.user,
+            id: payload.userId
+        }
+        return next();
+
+    }
+    catch (err) {
+        context.user = {
+            ...context.user,
+        }
+        return next();
+    }
+}
