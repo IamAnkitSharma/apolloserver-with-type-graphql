@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { Request } from "express";
 import { MiddlewareFn } from "type-graphql";
 import { MyContext } from "../types";
-import { JwtPayLoad } from '../resolvers/jwt-payload.interface';
+import { JwtPayLoad } from '../services/jwt-payload.interface';
 
 
 interface Headers {
@@ -16,7 +15,7 @@ export const isAuthenticated: MiddlewareFn<MyContext> = ({ context }, next) => {
     }
     const token = autorization.split(' ')[1];
     try {
-        const payload = jwt.verify(token, 'access secret') as JwtPayLoad;
+        const payload = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayLoad;
         context.user = {
             ...context.user,
             id: payload.userId

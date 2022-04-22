@@ -1,16 +1,14 @@
 import { IUser, User } from './../models/user.model';
-import { Arg, Ctx, Field, Mutation, ObjectType, Query, Resolver, UseMiddleware } from "type-graphql";
-
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { LoginResponse, UserObjectType } from '../typeDefs/auth';
 import "reflect-metadata";
 import { UserService } from '../services/user.service';
 import jwt from 'jsonwebtoken';
-import { isAuthenticated } from '../middlewares/isAuthenticated.middleware';
+import { isAuthenticated } from '../middlewares/auth.middleware';
 import { MyContext } from '../types';
 
 @Resolver()
 export class AuthResolver {
-
     @Query(() => UserObjectType)
     @UseMiddleware(isAuthenticated)
     async profile(
@@ -29,7 +27,7 @@ export class AuthResolver {
         const user = await UserService.login(username, password);
         if (!user) throw new Error('Invalid username or password');
         return {
-            accessToken: jwt.sign({ userId: user.id }, 'access secret', { expiresIn: '1h' })
+            accessToken: jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' })
         }
     }
 
