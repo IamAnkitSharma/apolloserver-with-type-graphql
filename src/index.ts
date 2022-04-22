@@ -12,7 +12,10 @@ async function startServer () {
         context: ({ req }) => ({ req }),
         schema: await buildSchema({
             resolvers: [AuthResolver]
-        })
+        }),
+        formatError(error) {
+            return new Error(error.message);
+        },
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });

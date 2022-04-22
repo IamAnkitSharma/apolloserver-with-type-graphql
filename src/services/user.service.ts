@@ -6,14 +6,16 @@ export class UserService {
         return await User.findById(id);
     }
     static async createUser(username: string, password: string): Promise<IUser> {
+        const user= await User.findOne({ username });
+        if (user) throw new Error('User Already Registered')
         const hash = await bcrypt.hash(password, 10);
         return User.create({ username, password: hash });
     }
-    static async verifyUserNameAndPassword(username: string, password: string): Promise<IUser | null> {
+    static async verifyUserNameAndPassword(username: string, password: string): Promise<IUser> {
         const user= await User.findOne({ username });
         if (!user) throw new Error('User Not Found')
         const isValid = await bcrypt.compare(password, user.password);
-        if (!isValid) return null;
+        if (!isValid) throw new Error('Invalid Password')
         return user;
     }
 }

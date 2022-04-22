@@ -25,7 +25,6 @@ export class AuthResolver {
         @Arg('password', () => String) password: string
     ): Promise<LoginResponse> {
         const user = await UserService.verifyUserNameAndPassword(username, password);
-        if (!user) throw new Error('Invalid password');
         return {
             accessToken: jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' })
         }
