@@ -9,11 +9,11 @@ dotenv.config();
 
 const app = express();
 
-app.get('/graphql', (req, res) => { 
+process.env.NODE_ENV === 'production' && app.get('/graphql', (req, res) => {
     res.send('Hello World');
 });
 
-async function startServer () {
+async function startServer() {
     const apolloServer = new ApolloServer({
         context: ({ req }) => ({ req }),
         schema: await buildSchema({
@@ -23,7 +23,8 @@ async function startServer () {
             console.log(JSON.stringify(error, null, 2));
             return error;
         },
-        debug: process.env.NODE_ENV !== 'production'
+        debug: process.env.NODE_ENV !== 'production',
+        introspection: process.env.NODE_ENV !== 'production',
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({ app });
