@@ -1,6 +1,7 @@
 import { ApolloServer } from "apollo-server-express";
 import express from 'express';
 import mongoose from "mongoose";
+import 'reflect-metadata';
 import { buildSchema } from "type-graphql";
 import { AuthResolver } from "./resolvers/auth";
 import dotenv from 'dotenv';

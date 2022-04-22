@@ -1,7 +1,6 @@
 import { IUser, User } from './../models/user.model';
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { LoginResponse, UserObjectType } from '../typeDefs/auth';
-import "reflect-metadata";
 import { UserService } from '../services/user.service';
 import jwt from 'jsonwebtoken';
 import { isAuthenticated } from '../middlewares/auth.middleware';
