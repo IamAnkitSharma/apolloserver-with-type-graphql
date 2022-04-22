@@ -13,13 +13,11 @@ export class AuthResolver {
 
     @Query(() => UserObjectType)
     @UseMiddleware(isAuthenticated)
-    async getUserById(
-        @Arg('id', () => String) id: string,
+    async profile(
         @Ctx() ctx: MyContext
     ): Promise<IUser> {
-        const user = await UserService.getUserById(id);
+        const user = await UserService.getUserById(ctx.user.id);
         if (!user) throw new Error('User not found');
-        console.log(ctx.user.id);
         return user;
     }
 
@@ -36,7 +34,7 @@ export class AuthResolver {
     }
 
     @Mutation(() => UserObjectType)
-    async createUser(
+    async signup(
         @Arg('username', () => String) username: string,
         @Arg('password', () => String) password: string
     ): Promise<IUser> {
