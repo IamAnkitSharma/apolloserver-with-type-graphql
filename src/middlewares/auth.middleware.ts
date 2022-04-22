@@ -9,11 +9,11 @@ interface Headers {
 }
 
 export const isAuthenticated: MiddlewareFn<MyContext> = ({ context }, next) => {
-    const autorization = (context.req.headers as unknown as Headers).authorization;
-    if (!autorization) {
+    const authorization = (context.req.headers as unknown as Headers).authorization;
+    if (!authorization) {
         throw new Error('Auth Token required');
     }
-    const token = autorization.split(' ')[1];
+    const token = authorization.split(' ')[1];
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayLoad;
         context.user = {
